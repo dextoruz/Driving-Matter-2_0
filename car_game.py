@@ -1,6 +1,7 @@
 import pyautogui as gui
 import time
 from getting_state import Frame
+from get_clip import VideoFromImages
 
 class Car():
     def __init__(self):
@@ -29,19 +30,27 @@ class Car():
             exit()
 
     def get_collision_info(self):
+        """ 
+            getting information about collision triggered event in AR game
+
+        """
         try:
             time.sleep(.1)
             filePath = "/run/user/1000/gvfs/mtp:host=SAMSUNG_SAMSUNG_Android_988dd1424c494c385a30/Phone/Android/data/com.soothscier.DrivingMatter/files"
             fileName = filePath + "/BoundaryCollision.txt"
             with open(fileName, 'r') as f:
-                return int(f.read().strip())
+                return int(f.read())
 
         except FileNotFoundError: 
             print("\n\t--> Boundary file is not found")
             exit()
+        except ValueError:
+            pass
 
     def perform_action(self, action):
-        
+        """
+            Performing an action in AR game using laptop.
+        """
         if action == 0: ## forward
             gui.press('s')
         
@@ -74,7 +83,10 @@ class Car():
             gui.keyUp('d')
 
     def timer(self):
-        ## time threshold to get all diamonds/portions
+        """
+         time threshold to get all diamonds/portions
+        
+        """
         end_time = time.time()
         if (end_time - self.startTime) >= self.epDuration:
             self.startTime = time.time()
@@ -83,9 +95,14 @@ class Car():
 
         
     def step(self, action):
+        """
+            getting reward after performing an action.
+        
+        """
         self.perform_action(action)
         done = False
         collision = self.get_collision_info()
+        print(collision)
         score = self.get_score()
         state = self.frame.get_frame()
         reward = 0
@@ -115,34 +132,25 @@ class Car():
 
         self.previousScore = score
         self.previousCollision = collision
-        return [state], reward, done, {}
+        return state, reward, done, {}
    
     def reset(self):
+        """
+            Resetting environment for next episode.
+            
+        """
         ## place all portions/diamonds
         self.previousScore = 0
         self.previousCollision = 0
         state = self.frame.get_frame()
         gui.click(self.screenPosX, self.screenPosY)  ## clicking 'environment' button in game
-        return [state]
+        return state
 
     def render(self):
         ## merged all images/frames and make a video clip
-        ## computationally costly at my laptop
-        pass
+        ## computationally costly at my laptop for now
         
-
-# if __name__ == "__main__":
-#     #### lacate the application
-#     # gui.hotkey('alt', 'tab')
-#     # time.sleep(.5)
-    
-    # obj = Car()
-#     # for i in range(30):
-#     #     act = random.randint(1, 4)
-#     #     obj.perform_action(act)
-#     a = obj.get_car_position()
-#     b = obj.get_score()
-    # n = False
-    # while not n:
-    #     n = obj.timer()
-    #     print(obj.timer())
+        ins = VideoFromImages()
+        ins.generate_video()
+        
+        

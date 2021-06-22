@@ -24,15 +24,14 @@ class Frame:
     def save_image(self):
 
         now = datetime.now()
-
         current_time = now.strftime("%H-%M-%S")
-        self.image.save("frames/frame-"+current_time+".png")
+        self.image.convert('L').save("frames/frame-"+current_time+".png")
 
     def get_pixels(self):
         """
             convert to numpy array and gray scale
         """
-        pix = numpy.asarray(self.image.convert('L')) ## gray scale image
+        pix = numpy.array(self.image.convert('L')) ## gray scale image
         return pix
 
     def get_frame(self):

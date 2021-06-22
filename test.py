@@ -17,7 +17,7 @@ mean_width = 0
 num_of_images = len(os.listdir('.'))
 print(num_of_images)
   
-for file in os.listdir('.'):
+for file in sorted(os.listdir('.')):
     try:
         im = Image.open(os.path.join(path, file))
         width, height = im.size
@@ -39,7 +39,7 @@ mean_height = int(mean_height / num_of_images)
   
 # Resizing of the images to give
 # them same width and height 
-for file in os.listdir('.'):
+for file in sorted(os.listdir('.')):
     try: 
         if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png"):
             # opening image using PIL Image
@@ -63,7 +63,7 @@ def generate_video():
     video_name = 'mygeneratedvideo.avi'
     # os.chdir("./frames-day2")
       
-    images = [img for img in os.listdir(image_folder)
+    images = [img for img in sorted(os.listdir(image_folder))
               if img.endswith(".jpg") or
                  img.endswith(".jpeg") or
                  img.endswith("png")]
@@ -78,7 +78,7 @@ def generate_video():
     # the width, height of first image
     height, width, layers = frame.shape  
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    video = cv2.VideoWriter(video_name, fourcc, 20, (width, height)) 
+    video = cv2.VideoWriter(video_name, fourcc, 30, (width, height)) 
   
     # Appending the images to the video one by one
     for image in images: 
@@ -91,3 +91,6 @@ def generate_video():
   
 # Calling the generate_video function
 generate_video()
+
+# os.chdir("./frames-day2") 
+# print(sorted(os.listdir('.')))

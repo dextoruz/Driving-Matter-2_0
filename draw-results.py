@@ -7,6 +7,11 @@ def plot_0():
         y = [float(i) for i in data ]
         x = [i for i in range(1, len(y)+1)]        
 
+
+        print(min(y))
+        print(max(y))
+        print(sum(y)/len(x))
+        
         plt.plot(x,y)
         plt.title('Training')
         plt.ylabel('Reward')
@@ -18,10 +23,14 @@ def plot_1():
         data = f.read().split('\n')[:-1]
         y = [float(i) for i in data ]
         x = [i for i in range(1, len(y)+1)]        
+        
+        print(min(y))
+        print(max(y))
+        print(sum(y)/len(x))
 
         plt.plot(x,y)
         plt.title('Training')
-        plt.ylabel('Reward per action')
+        plt.ylabel('Reward')
         plt.xlabel('Actions')
         plt.show()
 
